@@ -2,6 +2,7 @@ module DZT
   class S3Storage
     DEFAULT_ACL = 'public-read'
     DEFAULT_KEY = ''
+    DEFAULT_REGION = nil
     #
     # @param s3_acl: ACL to use for storing, defaults to 'public-read'.
     # @param s3_bucket: Bucket to store tiles.
@@ -13,6 +14,7 @@ module DZT
       @s3_acl = options[:s3_acl] || DEFAULT_ACL
       @s3_bucket = options[:s3_bucket]
       @s3_key = options[:s3_key] || DEFAULT_KEY
+      @s3_region = options[:s3_region] || DEFAULT_REGION
       @s3_id = options[:aws_id]
       @s3_secret = options[:aws_secret]
     end
@@ -22,6 +24,7 @@ module DZT
         require_fog!
         Fog::Storage.new(
           provider: 'AWS',
+          region: @s3_region,
           aws_access_key_id: @s3_id,
           aws_secret_access_key: @s3_secret
         )
